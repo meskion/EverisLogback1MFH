@@ -1,0 +1,44 @@
+<configuration>
+
+	<!-- Patron de la fecha, pues en el nombre del log querremos la fecha en 
+		la que se loggeo -->
+	<timestamp key="logDateVar" datePattern="dd-MM-yyyy" />
+
+	<appender name="everisLogFile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+		<!-- Archivo en el que se guarda el log con el formato que se pide -->
+		<file>c://dev//logs//elb1MFH${logDateVar}.log</file>
+
+		<!-- tambien se pide que el log se trocee en entre 1 y 3 archivos, por 
+			lo que se especifica: -->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<!-- esto define como se llamaran los trozos posibles del log -->
+			<fileNamePattern>c://dev//logs//elb1MFH${logDateVar}.%i.log.zip
+			</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>3</maxIndex>
+		</rollingPolicy>
+
+		<!-- el log debe trocearse cuando vaya a superar 50KB, lo controlamos con 
+			esta tag: -->
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>50KB</maxFileSize>
+		</triggeringPolicy>
+
+		<encoder>
+			<pattern>
+				%d %-5level [%thread] %logger{0}: %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+
+	<!-- Se define el nivel de raiz que puede usar el logger -->
+	<root level="debug">
+		<appender-ref ref="everisLogFile"></appender-ref>
+	</root>
+
+</configuration>
